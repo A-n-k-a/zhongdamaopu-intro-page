@@ -1,0 +1,17 @@
+<!-- 中转页 -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>正在跳转...</title>
+  <script>
+    // 接收小程序传递的目标链接并跳转
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetUrl = urlParams.get('url');
+    if (targetUrl) {
+      window.location.href = decodeURIComponent(targetUrl);
+    }
+  </script>
+</head>
+<body>正在跳转，请稍候...</body>
+</html>
