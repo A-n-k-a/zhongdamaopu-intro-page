@@ -59,7 +59,7 @@
 .hero-bg {
   background-image:
     linear-gradient(90deg, rgba(15, 23, 42, 0.82), rgba(15, 23, 42, 0.52) 48%, rgba(15, 23, 42, 0.2)),
-    url("/screenshots/d3a2c63d-a634-4757-a6a7-5b3dffaa23ef.png");
+    url("/screenshots/hero.webp");
   background-position: center;
   background-size: cover;
 }
@@ -67,7 +67,22 @@
 .dark .hero-bg {
   background-image:
     linear-gradient(90deg, rgba(2, 6, 23, 0.88), rgba(2, 6, 23, 0.62) 48%, rgba(2, 6, 23, 0.34)),
-    url("/screenshots/32918315-55cb-49f5-ab12-0cc992460056.png");
+    url("/screenshots/hero.webp");
+}
+
+@media (max-width: 767px) {
+  .hero-bg {
+    background-image:
+      linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(15, 23, 42, 0.58) 44%, rgba(15, 23, 42, 0.8)),
+      url("/screenshots/hero_mobile.webp");
+    background-position: center top;
+  }
+
+  .dark .hero-bg {
+    background-image:
+      linear-gradient(180deg, rgba(2, 6, 23, 0.82), rgba(2, 6, 23, 0.68) 44%, rgba(2, 6, 23, 0.9)),
+      url("/screenshots/hero_mobile.webp");
+  }
 }
 
 .nav-icon-button {
@@ -194,6 +209,86 @@
   font-size: 0.75rem;
   line-height: 1.35;
   margin-top: 0.15rem;
+}
+
+.join-section {
+  background-image:
+    linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card)) 52%, hsl(var(--secondary) / 0.42) 100%);
+}
+
+.join-note {
+  align-items: center;
+  background: hsl(var(--background) / 0.74);
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.65rem 0.75rem;
+}
+
+.join-card {
+  background:
+    linear-gradient(180deg, hsl(var(--background) / 0.92), hsl(var(--background) / 0.78)),
+    hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.5rem;
+  box-shadow: 0 18px 48px hsl(220 18% 18% / 0.08);
+  display: block;
+  min-height: 17rem;
+  overflow: hidden;
+  padding: 1.5rem;
+  position: relative;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.join-card::before {
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--support-a)), hsl(var(--support-c)));
+  content: "";
+  height: 0.25rem;
+  inset: 0 0 auto;
+  position: absolute;
+}
+
+.join-card:hover {
+  border-color: hsl(var(--primary) / 0.66);
+  box-shadow: 0 24px 58px hsl(220 18% 18% / 0.14);
+  transform: translateY(-3px);
+}
+
+.join-card-icon {
+  align-items: center;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  height: 3rem;
+  justify-content: center;
+  width: 3rem;
+}
+
+.join-card-icon[data-accent="support-a"] {
+  background: hsl(var(--support-a) / 0.14);
+  color: hsl(var(--support-a));
+}
+
+.join-card-icon[data-accent="support-b"] {
+  background: hsl(var(--support-b) / 0.14);
+  color: hsl(var(--support-b));
+}
+
+.dark .join-section {
+  background-image:
+    linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card)) 56%, hsl(var(--accent) / 0.24) 100%);
+}
+
+.dark .join-card {
+  box-shadow: 0 18px 48px hsl(0 0% 0% / 0.18);
+}
+
+.dark .join-card:hover {
+  box-shadow: 0 24px 58px hsl(0 0% 0% / 0.28);
 }
 
 svg[data-open="true"] {

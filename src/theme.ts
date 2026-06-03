@@ -1,5 +1,6 @@
-export const THEME_SEED_COLOR = "#FFD101";
+// export const THEME_SEED_COLOR = "#FFD101";
 // export const THEME_SEED_COLOR = "#003B6D";
+export const THEME_SEED_COLOR = "#66CCFF";
 
 type Hsl = {
   h: number;

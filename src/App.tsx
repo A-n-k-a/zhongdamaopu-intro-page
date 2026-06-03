@@ -2,19 +2,21 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BadgeCheck,
-  Camera,
   Cat,
+  ClipboardPenLine,
+  ExternalLink,
   Heart,
   ImagePlus,
   Monitor,
   Moon,
+  PawPrint,
   QrCode,
   ShieldCheck,
   Sparkles,
   Sun,
+  UserPlus,
   Users,
 } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,24 +24,26 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { applyDynamicTheme } from "@/theme";
 
+const app_title = "砚湖喵影";
+
 const productTabs = {
   archive: {
     label: "档案",
-    src: "/screenshots/档案.png",
-    alt: "笃行猫谱档案页面截图",
+    src: "/screenshots/档案.webp",
+    alt: `${app_title}档案页面截图`,
     description: "资料卡、相册、精选瀑布流和关系图帮助用户认识每只猫的状态和故事。",
   },
   social: {
     label: "互动",
-    src: "/screenshots/互动.png",
-    alt: "笃行猫谱互动页面截图",
+    src: "/screenshots/互动.webp",
+    alt: `${app_title}互动页面截图`,
     description: "上传、点赞、留言、反馈和关注动态，让社群可以持续补充信息。",
   },
   tools: {
     label: "工具",
-    src: "/screenshots/工具.png",
-    alt: "笃行猫谱工具页面截图",
-    description: "拍照识猫、科普、公告、徽章和排行榜用于扩展运营玩法。",
+    src: "/screenshots/工具.webp",
+    alt: `${app_title}工具页面截图`,
+    description: "科普、公告、徽章、排行榜和反馈入口用于扩展运营玩法。",
   },
 } as const;
 
@@ -60,9 +64,9 @@ const features = [
     description: "用户可以上传照片、点赞、留言和反馈，让资料持续由社区维护。",
   },
   {
-    icon: Camera,
-    title: "拍照识猫",
-    description: "支持通过图片识别相似猫咪，帮助新同学快速认识校园里的熟面孔。",
+    icon: ClipboardPenLine,
+    title: "线索反馈",
+    description: "支持提交新猫线索、资料纠错和照片补充，让猫猫信息更快被更新。",
   },
   {
     icon: ShieldCheck,
@@ -77,6 +81,25 @@ const stats = [
   ["15+", "友校实践"],
   ["0", "管理端门槛"],
 ];
+
+const contributionEntries = [
+  {
+    icon: UserPlus,
+    title: "内容管理志愿者招募",
+    description: "一起整理猫猫资料、审核照片、补充动态，把零散的信息变成可靠的校园猫档案。",
+    href: "https://docs.qq.com/form/page/DYVhXSGtFZnZJc2tV",
+    cta: "报名成为志愿者",
+    accent: "support-a",
+  },
+  {
+    icon: ClipboardPenLine,
+    title: "猫猫户口登记",
+    description: "发现新猫、昵称变化、花色信息或活动区域需要修订，都可以从这里提交。",
+    href: "https://umai.anka1.top/q/new-neko-questionnaire",
+    cta: "提交猫猫信息",
+    accent: "support-b",
+  },
+] as const;
 
 const themeOptions = [
   { value: "system", label: "跟随系统", icon: Monitor },
@@ -163,16 +186,16 @@ function App() {
       <section className="hero-bg relative z-10 min-h-[88vh] overflow-visible text-white">
         <div className="container flex min-h-[88vh] flex-col justify-between py-6">
           <nav className="flex items-center justify-between gap-4">
-            <a className="flex items-center gap-2 text-sm font-semibold" href="#top" aria-label="笃行猫谱首页">
+            <a className="flex items-center gap-2 text-sm font-semibold" href="#top" aria-label={`${app_title}首页`}>
               <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-slate-950">
                 <Cat className="h-5 w-5" />
               </span>
-              笃行猫谱
+              {app_title}
             </a>
             <div className="flex items-center gap-3">
               <div className="hidden items-center gap-6 text-sm text-white/82 md:flex">
                 <a className="hover:text-white" href="#features">功能</a>
-                <a className="hover:text-white" href="#deploy">部署</a>
+                <a className="hover:text-white" href="#join">加入</a>
                 <a className="hover:text-white" href="#community">共建</a>
               </div>
               <div className="relative">
@@ -228,10 +251,10 @@ function App() {
               微信小程序 · 校园猫猫成长档案
             </Badge>
             <h1 className="max-w-2xl text-5xl font-semibold leading-tight tracking-normal md:text-7xl">
-              笃行猫谱
+              {app_title}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/88 md:text-xl">
-              拍照记录校园内猫猫的成长轨迹。用档案、相册、识猫、科普和端内管理，把分散在校园里的照护记忆整理成一份长期可维护的猫谱。
+              拍照记录校园内猫猫的成长轨迹。用档案、相册、反馈、科普和端内管理，把分散在校园里的照护记忆整理成一份长期可维护的猫谱。
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <div
@@ -250,7 +273,7 @@ function App() {
                   className="hero-popover left-0 top-[calc(100%+0.75rem)] w-48 p-3"
                   data-open={isQrOpen}
                 >
-                  <img className="rounded-md border bg-white p-2" src="/qrcode.png" alt="笃行猫谱小程序二维码" />
+                  <img className="rounded-md border bg-white p-2" src="/qrcode.webp" alt={`${app_title}小程序二维码`} />
                   <p className="mt-2 text-center text-xs text-muted-foreground">微信扫码体验</p>
                 </div>
               </div>
@@ -287,23 +310,23 @@ function App() {
                   </a>
                   <a
                     className="hero-menu-item"
-                    href="https://docs.qq.com/doc/DSE1vd0p3RERvWXJS"
+                    href="https://docs.qq.com/form/page/DYVhXSGtFZnZJc2tV"
                     target="_blank"
                     rel="noreferrer"
                     role="menuitem"
                   >
-                    部署文档
-                    <span>EMAS 版部署说明</span>
+                    志愿者招募
+                    <span>参与资料维护与内容运营</span>
                   </a>
                   <a
                     className="hero-menu-item"
-                    href="https://docs.qq.com/doc/DSEl0aENOSEx5cmtE"
+                    href="https://umai.anka1.top/q/new-neko-questionnaire"
                     target="_blank"
                     rel="noreferrer"
                     role="menuitem"
                   >
-                    管理员手册
-                    <span>小程序端资料管理</span>
+                    猫猫户口登记
+                    <span>新增猫猫或修订资料</span>
                   </a>
                 </div>
               </div>
@@ -438,56 +461,75 @@ function App() {
               打开微信，搜索或扫码进入
             </h2>
             <p className="mt-4 text-base leading-7 text-muted-foreground">
-              当前线上小程序名为“笃行猫谱”。如果你正在为自己的校园或社群准备猫谱，可以先体验完整用户路径。
+              当前线上小程序名为“{app_title}”。已完成ICP备案和微信认证，拥有完整的被搜索和分享能力。
             </p>
           </div>
           <Card className="mx-auto w-full max-w-sm bg-card">
             <CardHeader className="items-center text-center">
               <CardTitle className="flex items-center gap-2">
                 <QrCode className="h-5 w-5" />
-                笃行猫谱
+                {app_title}
               </CardTitle>
               <CardDescription>微信扫码体验小程序</CardDescription>
             </CardHeader>
             <CardContent>
-              <img className="mx-auto w-56 rounded-md border bg-white p-2" src="/qrcode.png" alt="笃行猫谱小程序二维码" />
+              <img className="mx-auto w-56 rounded-md border bg-white p-2" src="/qrcode.webp" alt={`${app_title}小程序二维码`} />
             </CardContent>
           </Card>
         </div>
       </section>
 
-      <section id="deploy" className="bg-card py-20">
+      <section id="join" className="join-section bg-card py-20">
         <div className="container">
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center">
             <div>
-              <Badge variant="outline">部署说明</Badge>
+              <Badge variant="outline">加入共建</Badge>
               <h2 className="mt-4 text-3xl font-semibold tracking-normal md:text-4xl">
-                从开源代码开始，发布自己的猫谱
+                让每一只被看见的猫，都有一份被认真维护的档案
               </h2>
               <p className="mt-4 text-base leading-7 text-muted-foreground">
-                小程序主体使用微信小程序、EMAS Serverless 和对象存储。介绍页本身是独立静态站点，可直接部署到 Vercel 或 Netlify。
+                {app_title}需要更多朋友一起补充照片、校对信息、撰写动态，也需要每一次来自校园里的新发现。
               </p>
+              <div className="mt-6 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
+                <div className="join-note">
+                  <PawPrint className="h-4 w-4 text-[hsl(var(--support-a))]" />
+                  资料更完整
+                </div>
+                <div className="join-note">
+                  <Heart className="h-4 w-4 text-[hsl(var(--support-b))]" />
+                  照护更连续
+                </div>
+                <div className="join-note">
+                  <BadgeCheck className="h-4 w-4 text-[hsl(var(--support-c))]" />
+                  社群更可靠
+                </div>
+              </div>
             </div>
-            <Accordion type="single" collapsible defaultValue="" className="w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger>介绍页如何部署到 Vercel？</AccordionTrigger>
-                <AccordionContent>
-                  导入仓库后将 Root Directory 设置为 intro-page，Build Command 使用 npm run build，Output Directory 使用 dist。
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>介绍页如何部署到 Netlify？</AccordionTrigger>
-                <AccordionContent>
-                  Netlify 会读取 intro-page/netlify.toml；站点根目录选择 intro-page，构建命令为 npm run build，发布目录为 dist。
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>小程序部署需要哪些资料？</AccordionTrigger>
-                <AccordionContent>
-                  README 中提供了猫谱 EMAS 版部署文档和管理员手册，适合按步骤配置后端、存储、数据库和端内管理流程。
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+            <div className="grid gap-4 md:grid-cols-2">
+              {contributionEntries.map((entry) => (
+                <a
+                  className="join-card group"
+                  href={entry.href}
+                  key={entry.title}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span className="join-card-icon" data-accent={entry.accent}>
+                    <entry.icon className="h-6 w-6" />
+                  </span>
+                  <span className="mt-6 block text-xl font-semibold tracking-normal text-foreground">
+                    {entry.title}
+                  </span>
+                  <span className="mt-3 block text-sm leading-6 text-muted-foreground">
+                    {entry.description}
+                  </span>
+                  <span className="mt-6 inline-flex items-center text-sm font-semibold text-foreground">
+                    {entry.cta}
+                    <ExternalLink className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -526,19 +568,19 @@ function App() {
             <div>
               <div className="flex items-center gap-2 font-semibold">
                 <Sparkles className="h-5 w-5 text-primary" />
-                笃行猫谱
+                {app_title}
               </div>
               <p className="mt-2 text-sm text-white/64">拍照记录校园内猫猫的成长轨迹。</p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Button asChild variant="secondary">
-                <a href="https://docs.qq.com/doc/DSE1vd0p3RERvWXJS" target="_blank" rel="noreferrer">
-                  部署文档
+                <a href="https://docs.qq.com/form/page/DYVhXSGtFZnZJc2tV" target="_blank" rel="noreferrer">
+                  志愿者招募
                 </a>
               </Button>
               <Button asChild variant="outline" className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white">
-                <a href="https://docs.qq.com/doc/DSEl0aENOSEx5cmtE" target="_blank" rel="noreferrer">
-                  管理员手册
+                <a href="https://umai.anka1.top/q/new-neko-questionnaire" target="_blank" rel="noreferrer">
+                  猫猫户口登记
                 </a>
               </Button>
             </div>
