@@ -286,6 +286,7 @@
     transform 180ms ease;
 }
 
+/*
 .join-card::before {
   background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--support-a)), hsl(var(--support-c)));
   content: "";
@@ -293,6 +294,7 @@
   inset: 0 0 auto;
   position: absolute;
 }
+*/
 
 .join-card:hover {
   border-color: hsl(var(--primary) / 0.66);
