@@ -70,6 +70,12 @@
     url("/screenshots/hero.webp");
 }
 
+.hero-screen {
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+
 @media (max-width: 767px) {
   .hero-bg {
     background-image:
@@ -209,6 +215,41 @@
   font-size: 0.75rem;
   line-height: 1.35;
   margin-top: 0.15rem;
+}
+
+.hero-touch-menu {
+  display: grid;
+  gap: 0.5rem;
+  width: min(100%, 22rem);
+}
+
+.hero-touch-menu-item {
+  backdrop-filter: blur(16px) saturate(1.15);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 0.5rem;
+  color: white;
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0.7rem 0.85rem;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+.hero-touch-menu-item:active {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.36);
+}
+
+.hero-touch-menu-item span {
+  color: rgba(255, 255, 255, 0.72);
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.35;
+  margin-top: 0.18rem;
 }
 
 .join-section {

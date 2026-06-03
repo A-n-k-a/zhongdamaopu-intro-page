@@ -49,6 +49,7 @@ const productTabs = {
 
 type ProductTab = keyof typeof productTabs;
 type ThemePreference = "system" | "light" | "dark";
+type PrimaryInput = "mouse" | "touch" | "unknown";
 
 const productTabOrder: ProductTab[] = ["archive", "social", "tools"];
 
@@ -101,6 +102,24 @@ const contributionEntries = [
   },
 ] as const;
 
+const heroMenuEntries = [
+  {
+    title: "源代码仓库",
+    description: "sysucats/zhongdamaopu",
+    href: "https://github.com/sysucats/zhongdamaopu#",
+  },
+  {
+    title: "志愿者招募",
+    description: "参与资料维护与内容运营",
+    href: "https://docs.qq.com/form/page/DYVhXSGtFZnZJc2tV",
+  },
+  {
+    title: "猫猫户口登记",
+    description: "新增猫猫或修订资料",
+    href: "https://umai.anka1.top/q/new-neko-questionnaire",
+  },
+] as const;
+
 const themeOptions = [
   { value: "system", label: "跟随系统", icon: Monitor },
   { value: "light", label: "浅色模式", icon: Sun },
@@ -116,15 +135,36 @@ const getStoredThemePreference = (): ThemePreference => {
   }
 };
 
+const getPrimaryInput = (): PrimaryInput => {
+  const isTouchPrimary =
+    window.matchMedia("(pointer: coarse)").matches &&
+    window.matchMedia("(hover: none)").matches;
+  const isMousePrimary =
+    window.matchMedia("(pointer: fine)").matches &&
+    window.matchMedia("(hover: hover)").matches;
+
+  if (isTouchPrimary) {
+    return "touch";
+  }
+
+  if (isMousePrimary) {
+    return "mouse";
+  }
+
+  return "unknown";
+};
+
 function App() {
   const [activeProductTab, setActiveProductTab] = useState<ProductTab>("archive");
   const [slideDirection, setSlideDirection] = useState<"next" | "prev">("next");
   const [isQrOpen, setIsQrOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isThemeOpen, setIsThemeOpen] = useState(false);
+  const [primaryInput, setPrimaryInput] = useState<PrimaryInput>(getPrimaryInput);
   const [themePreference, setThemePreference] = useState<ThemePreference>(getStoredThemePreference);
   const moreMenuTimer = useRef<ReturnType<typeof window.setTimeout> | null>(null);
   const activeProductIndex = productTabOrder.indexOf(activeProductTab);
+  const isTouchPrimary = primaryInput === "touch";
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
@@ -146,6 +186,23 @@ function App() {
 
     return () => mediaQuery.removeEventListener("change", applyTheme);
   }, [themePreference]);
+
+  useEffect(() => {
+    const inputQueries = [
+      window.matchMedia("(pointer: coarse)"),
+      window.matchMedia("(pointer: fine)"),
+      window.matchMedia("(hover: none)"),
+      window.matchMedia("(hover: hover)"),
+    ];
+    const updatePrimaryInput = () => setPrimaryInput(getPrimaryInput());
+
+    inputQueries.forEach((query) => query.addEventListener("change", updatePrimaryInput));
+    updatePrimaryInput();
+
+    return () => {
+      inputQueries.forEach((query) => query.removeEventListener("change", updatePrimaryInput));
+    };
+  }, []);
 
   const updateActiveProductTab = (value: string) => {
     const nextTab = value as ProductTab;
@@ -176,15 +233,15 @@ function App() {
 
   const scrollDownOnePage = () => {
     window.scrollBy({
-      top: window.innerHeight,
+      top: window.visualViewport?.height ?? window.innerHeight,
       behavior: "smooth",
     });
   };
 
   return (
     <main className="min-h-screen">
-      <section className="hero-bg relative z-10 min-h-[88vh] overflow-visible text-white">
-        <div className="container flex min-h-[88vh] flex-col justify-between py-6">
+      <section className="hero-bg hero-screen relative z-10 overflow-visible text-white">
+        <div className="container hero-screen flex flex-col justify-between py-6">
           <nav className="flex items-center justify-between gap-4">
             <a className="flex items-center gap-2 text-sm font-semibold" href="#top" aria-label={`${app_title}首页`}>
               <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-slate-950">
@@ -246,7 +303,7 @@ function App() {
             </div>
           </nav>
 
-          <div id="top" className="max-w-3xl pb-24 pt-14 md:pb-32 md:pt-16">
+          <div id="top" className="max-w-3xl pb-28 pt-14 md:pb-52 md:pt-16">
             <Badge className="mb-6 bg-white/14 text-white backdrop-blur" variant="outline">
               微信小程序 · 校园猫猫成长档案
             </Badge>
@@ -278,58 +335,58 @@ function App() {
                 </div>
               </div>
 
-              <div
-                className="relative"
-                onMouseEnter={openMoreMenu}
-                onMouseLeave={closeMoreMenu}
-              >
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  onClick={scrollDownOnePage}
-                  aria-haspopup="menu"
-                  aria-expanded={isMoreOpen}
-                >
-                  了解更多
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200" data-open={isMoreOpen} />
-                </Button>
+              {isTouchPrimary ? (
+                <nav className="hero-touch-menu" aria-label="更多入口">
+                  {heroMenuEntries.map((entry) => (
+                    <a
+                      className="hero-touch-menu-item"
+                      href={entry.href}
+                      key={entry.title}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {entry.title}
+                      <span>{entry.description}</span>
+                    </a>
+                  ))}
+                </nav>
+              ) : (
                 <div
-                  className="hero-popover left-0 top-[calc(100%+0.75rem)] w-64 overflow-hidden p-2"
-                  data-open={isMoreOpen}
-                  role="menu"
+                  className="relative"
+                  onMouseEnter={openMoreMenu}
+                  onMouseLeave={closeMoreMenu}
                 >
-                  <a
-                    className="hero-menu-item"
-                    href="https://github.com/sysucats/zhongdamaopu#"
-                    target="_blank"
-                    rel="noreferrer"
-                    role="menuitem"
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    onClick={scrollDownOnePage}
+                    aria-haspopup="menu"
+                    aria-expanded={isMoreOpen}
                   >
-                    源代码仓库
-                    <span>sysucats/zhongdamaopu</span>
-                  </a>
-                  <a
-                    className="hero-menu-item"
-                    href="https://docs.qq.com/form/page/DYVhXSGtFZnZJc2tV"
-                    target="_blank"
-                    rel="noreferrer"
-                    role="menuitem"
+                    了解更多
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200" data-open={isMoreOpen} />
+                  </Button>
+                  <div
+                    className="hero-popover left-0 top-[calc(100%+0.75rem)] w-64 overflow-hidden p-2"
+                    data-open={isMoreOpen}
+                    role="menu"
                   >
-                    志愿者招募
-                    <span>参与资料维护与内容运营</span>
-                  </a>
-                  <a
-                    className="hero-menu-item"
-                    href="https://umai.anka1.top/q/new-neko-questionnaire"
-                    target="_blank"
-                    rel="noreferrer"
-                    role="menuitem"
-                  >
-                    猫猫户口登记
-                    <span>新增猫猫或修订资料</span>
-                  </a>
+                    {heroMenuEntries.map((entry) => (
+                      <a
+                        className="hero-menu-item"
+                        href={entry.href}
+                        key={entry.title}
+                        target="_blank"
+                        rel="noreferrer"
+                        role="menuitem"
+                      >
+                        {entry.title}
+                        <span>{entry.description}</span>
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
